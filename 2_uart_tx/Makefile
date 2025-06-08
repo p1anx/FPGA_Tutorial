@@ -1,10 +1,13 @@
 # Makefile for Verilog simulation with Icarus Verilog and GTKWave
 
 # Define the source files
-SRC_FILES = uart.v uart_tb.v uart_tx_nbyte.v timer.v
+# SRC_FILES = uart.v uart_tb.v uart_tx_nbyte.v timer.v
+# SRC_FILES = uart_tx_nbyte.v  uart_tx_nbyte_tb.v
+SRC_FILES = uart_tx_num_tb.v uart_tx.v uart_tx_num.v
 
+BUILD_DIR = build
 # Define the output file
-OUTPUT_FILE = wave
+OUTPUT_FILE = $(BUILD_DIR)/wave
 
 # Define the waveform file
 WAVEFORM_FILE = $(OUTPUT_FILE).vcd
@@ -15,8 +18,11 @@ SIM_CMD = vvp -n $(OUTPUT_FILE) -lxt2
 # Default target
 all: simulate
 
+$(BUILD_DIR):
+	mkdir -p $(BUILD_DIR)
+
 # Simulate target
-simulate: compile run_simulation view_waveforms
+simulate: $(BUILD_DIR) compile run_simulation view_waveforms
 
 # Compile target
 compile:
@@ -32,7 +38,8 @@ view_waveforms:
 
 # Clean target (remove generated files)
 clean:
-	rm -f $(OUTPUT_FILE) $(WAVEFORM_FILE) *.lxt
+# rm -f $(OUTPUT_FILE) $(WAVEFORM_FILE) *.lxt
+	rm -rf build
 
 #Phony target (to prevent name collision)
 .PHONY: all simulate compile run_simulation view_waveforms clean

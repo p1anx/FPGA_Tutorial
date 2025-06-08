@@ -18,40 +18,24 @@
 ////////////////////////////////////////////////////////////////////////
 
 module  uart_tx
+#(
+    parameter   UART_BPS    =   'd9600,         //串口波特率
+    parameter   CLK_FREQ    =   'd50_000_000    //时钟频率
+)
 (
-    sys_clk     ,
-    sys_rst_n   ,   //全局复位
-    pi_data     ,   //模块输入的8bit数据
-    pi_flag     ,   //并行数据有效标志信号
-    baudrate    ,
+     input   wire            sys_clk     ,   //系统时钟50MHz
+     input   wire            sys_rst_n   ,   //全局复位
+     input   wire    [7:0]   pi_data     ,   //模块输入的8bit数据
+     input   wire            pi_flag     ,   //并行数据有效标志信号
  
-    tx          ,  //串转并后的1bit数据
-    tx_cmp_flag
-
+     output  reg             tx              //串转并后的1bit数据
 );
-input           sys_clk    ;   //系统时钟50MHz
-input           sys_rst_n  ;   //全局复位
-input [7:0]     pi_data    ;   //模块输入的8bit数据
-input           pi_flag    ;   //并行数据有效标志信号
-input [31:0]    baudrate   ;   //并行数据有效标志信号
 
-output reg      tx         ;  //串转并后的1bit数据
-output reg      tx_cmp_flag;
 //********************************************************************//
 //****************** Parameter and Internal Signal *******************//
 //********************************************************************//
 //localparam    define
-localparam  SYS_CLK = 50_000_000;
-reg [31:0] BAUD_CNT_MAX; 
-
-always @(*) begin
-    case (baudrate)
-        115200: BAUD_CNT_MAX = SYS_CLK / 115200;
-        9600  : BAUD_CNT_MAX = SYS_CLK / 9600  ;
-        default: BAUD_CNT_MAX = SYS_CLK / 115200;
-    endcase
-    
-end
+localparam  BAUD_CNT_MAX    =   CLK_FREQ/UART_BPS   ;
 
 //reg   define
 reg [12:0]  baud_cnt;
@@ -70,14 +54,6 @@ always@(posedge sys_clk or negedge sys_rst_n)
             work_en <= 1'b1;
         else    if((bit_flag == 1'b1) && (bit_cnt == 4'd9))
             work_en <= 1'b0;
-
-always@(posedge sys_clk or negedge sys_rst_n)
-    if(sys_rst_n == 1'b0)
-        tx_cmp_flag <= 1'b0;
-    else    if((bit_cnt == 4'd9) && (bit_flag == 1'b1))
-        tx_cmp_flag <= 1'b1;
-    else
-        tx_cmp_flag <= 1'b0;
 
 //baud_cnt:波特率计数器计数，从0计数到BAUD_CNT_MAX - 1
 always@(posedge sys_clk or negedge sys_rst_n)
@@ -105,6 +81,7 @@ always@(posedge sys_clk or negedge sys_rst_n)
         bit_cnt <= 4'b0;
     else    if((bit_flag == 1'b1) && (work_en == 1'b1))
         bit_cnt <= bit_cnt + 1'b1;
+
 //tx:输出数据在满足rs232协议（起始位为0，停止位为1）的情况下一位一位输出
 always@(posedge sys_clk or negedge sys_rst_n)
         if(sys_rst_n == 1'b0)
