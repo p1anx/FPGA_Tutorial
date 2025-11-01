@@ -1,20 +1,10 @@
 # FPGA_Tutorial
 ## PIN of fire FPGA(EP4CE10F17)
-IIC各引脚分配如下表所示：	
+时钟引脚分配表如下表所示：	
 引脚名	FPGA绑定引脚
-I2C1_SCL	P15
-I2C1_SDA	N14
+sys_clk 	E1
+sys_rst_n	M15
 
-CAN引脚分配如下表所示：	
-引脚名	FPGA绑定引脚
-CAN_RX	L10
-CAN_TX	K10
-	
-触摸按键引脚分配如下表所示：	
-引脚名	FPGA绑定引脚
-T_PAD1	K11
-T_PAD2	B14
-	
 按键引脚分配如下表所示：	
 引脚名	FPGA绑定引脚
 RESET	M15
@@ -39,6 +29,29 @@ UART2_TX	M7
 UART3_RX	L8
 UART3_TX	P6
 RS485_RE	C11
+
+FLASH各引脚分配如下表所示：	
+引脚名	FPGA绑定引脚
+FLASH_NCE	D2
+EPCS_CLK	H1
+EPCS_ASDO	C1
+EPCS_DATA0	H2
+
+IIC各引脚分配如下表所示：	
+引脚名	FPGA绑定引脚
+I2C1_SCL	P15
+I2C1_SDA	N14
+
+CAN引脚分配如下表所示：	
+引脚名	FPGA绑定引脚
+CAN_RX	L10
+CAN_TX	K10
+	
+触摸按键引脚分配如下表所示：	
+引脚名	FPGA绑定引脚
+T_PAD1	K11
+T_PAD2	B14
+	
 ## PIN of Atom(ZYNQ7020)
 开发板PL IO引脚列表			
 信号名	方向	管脚	端口说明
@@ -68,3 +81,5 @@ gbc_led	    output	N15	LED端口
 IIC总线（EEPROM/RTC实时时钟/音频配置）			
 iic_scl	    output	E18	IIC时钟信号线
 iic_sda	    inout	F17	IIC双向数据线
+
+
