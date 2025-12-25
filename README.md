@@ -53,9 +53,11 @@ T_PAD1	K11
 T_PAD2	B14
 	
 ## PIN of Atom(ZYNQ7020)
-开发板PL IO引脚列表			
-信号名	方向	管脚	端口说明
-系统时钟（50Mhz）			
+开发板PL IO引脚列表
+---
+|信号名	|方向	|管脚	|端口说明|
+---
+|系统时钟（50Mhz）|			
 sys_clk	    input	U18	系统时钟，频率：50Mhz
 PL复位按键			
 sys_rst_n	input	N16	PL复位复位，低电平有效
